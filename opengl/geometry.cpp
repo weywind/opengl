@@ -10,3 +10,22 @@ void drawCircle(int radius, int slices)
 	}
 	glEnd();
 }
+
+GLUquadricObj* drawSphere(int radius, int slices)
+{
+	GLUquadricObj* qobj;// 创建一个二次曲面(二次曲面的创建GLUquadricObj* qobj;qobj = gluNewQuadric();)
+	qobj = gluNewQuadric();
+	gluSphere(qobj, radius, slices, slices);
+	return qobj;
+}
+GLUquadricObj* drawSphereWithTexture(int radius, int slices, GLuint textureName)
+{
+	GLUquadricObj* qobj;// 创建一个二次曲面(二次曲面的创建GLUquadricObj* qobj;qobj = gluNewQuadric();)
+
+	qobj = gluNewQuadric();
+	glBindTexture(GL_TEXTURE_2D, textureName);
+	glEnable(GL_TEXTURE_2D);
+	gluQuadricTexture(qobj, GL_TRUE);//纹理函数
+	gluSphere(qobj, radius, slices, slices);
+	return qobj;
+}

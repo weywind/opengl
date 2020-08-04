@@ -2,9 +2,33 @@
 #include <GL/glut.h>
 #include <stdlib.h>
 #include<iostream>
+#include <gl/GLAUX.H>
 #include "geometry.h"
+#include "texture.h"
+
+#include <windows.h>
+
 double h = 0;
 double r = 0;
+double speed = 1;
+GLfloat  corner = 0.0;
+GLuint texName;
+GLuint texName2;
+GLuint texName3;
+GLuint textureSun;
+
+GLuint flag = 1;
+GLUquadricObj* qobj;
+
+const int objCount = 3;
+
+GLuint texture[3] = { 1,2,3 };
+void initText(const char** texturepaths)
+{
+	for (int i = 0; i < objCount; i++) {
+		 generateTexture(texturepaths[i],&texture[i]);
+	}
+}
 void init(void)
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0); //背景黑色
@@ -39,60 +63,82 @@ void display(void)
 		drawCircle(10, 50);
 		drawCircle(15, 50);
 		glPushMatrix();
-			glRotatef(2 * r, 0, 0, 1);
+			glRotatef(2 * r * speed, 0, 0, 1);
 				{
-					GLfloat sun_mat_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f };  //定义材质的环境光颜色，为0
-					GLfloat sun_mat_diffuse[] = { 0.0f, 0.0f, 0.0f, 1.0f };  //定义材质的漫反射光颜色，为0
-					GLfloat sun_mat_specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };   //定义材质的镜面反射光颜色，为0
-					GLfloat sun_mat_emission[] = { 0.8f, 0.0f, 0.0f, 1.0f };   //定义材质的辐射广颜色，为偏红色
-					GLfloat sun_mat_shininess = 0.0f;
-					glMaterialfv(GL_FRONT, GL_AMBIENT, sun_mat_ambient);
-					glMaterialfv(GL_FRONT, GL_DIFFUSE, sun_mat_diffuse);
-					glMaterialfv(GL_FRONT, GL_SPECULAR, sun_mat_specular);
-					glMaterialfv(GL_FRONT, GL_EMISSION, sun_mat_emission);
-					glMaterialf(GL_FRONT, GL_SHININESS, sun_mat_shininess);
-					glutWireSphere(5, 20, 20);
+					//GLfloat sun_mat_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f };  //定义材质的环境光颜色，为0
+					//GLfloat sun_mat_diffuse[] = { 0.0f, 0.0f, 0.0f, 1.0f };  //定义材质的漫反射光颜色，为0
+					//GLfloat sun_mat_specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };   //定义材质的镜面反射光颜色，为0
+					//GLfloat sun_mat_emission[] = { 0.8f, 0.0f, 0.0f, 1.0f };   //定义材质的辐射广颜色，为偏红色
+					//GLfloat sun_mat_shininess = 0.0f;
+					//glMaterialfv(GL_FRONT, GL_AMBIENT, sun_mat_ambient);
+					//glMaterialfv(GL_FRONT, GL_DIFFUSE, sun_mat_diffuse);
+					//glMaterialfv(GL_FRONT, GL_SPECULAR, sun_mat_specular);
+					//glMaterialfv(GL_FRONT, GL_EMISSION, sun_mat_emission);
+					//glMaterialf(GL_FRONT, GL_SHININESS, sun_mat_shininess);
+
+
+				GLUquadricObj* quadricSun = drawSphereWithTexture(5, 50, texture[0]);
+
+				
 				}
 		glPopMatrix();
 		glPushMatrix();
-			glRotatef(r, 0, 0, 1);
+			glRotatef(r * speed, 0, 0, 1);
 			glTranslatef(10, 0, 0);
 			{
-				GLfloat earth_mat_ambient[] = { 0.0f, 0.0f, 1.0f, 1.0f };  //定义材质的环境光颜色，骗蓝色
-				GLfloat earth_mat_diffuse[] = { 0.0f, 0.0f, 0.5f, 1.0f };  //定义材质的漫反射光颜色，偏蓝色
-				GLfloat earth_mat_specular[] = { 1.0f, 0.0f, 0.0f, 1.0f };   //定义材质的镜面反射光颜色，红色
-				GLfloat earth_mat_emission[] = { 0.0f, 0.0f, 0.0f, 1.0f };   //定义材质的辐射光颜色，为0
-				GLfloat earth_mat_shininess = 30.0f;
-				glMaterialfv(GL_FRONT, GL_AMBIENT, earth_mat_ambient);
-				glMaterialfv(GL_FRONT, GL_DIFFUSE, earth_mat_diffuse);
-				glMaterialfv(GL_FRONT, GL_SPECULAR, earth_mat_specular);
-				glMaterialfv(GL_FRONT, GL_EMISSION, earth_mat_emission);
-				glMaterialf(GL_FRONT, GL_SHININESS, earth_mat_shininess);
-				glutSolidSphere(1, 20, 20);
+				//GLfloat earth_mat_ambient[] = { 0.0f, 0.0f, 1.0f, 1.0f };  //定义材质的环境光颜色，骗蓝色
+				//GLfloat earth_mat_diffuse[] = { 0.0f, 0.0f, 0.5f, 1.0f };  //定义材质的漫反射光颜色，偏蓝色
+				//GLfloat earth_mat_specular[] = { 1.0f, 0.0f, 0.0f, 1.0f };   //定义材质的镜面反射光颜色，红色
+				//GLfloat earth_mat_emission[] = { 0.0f, 0.0f, 0.0f, 1.0f };   //定义材质的辐射光颜色，为0
+				//GLfloat earth_mat_shininess = 30.0f;
+				//glMaterialfv(GL_FRONT, GL_AMBIENT, earth_mat_ambient);
+				//glMaterialfv(GL_FRONT, GL_DIFFUSE, earth_mat_diffuse);
+				//glMaterialfv(GL_FRONT, GL_SPECULAR, earth_mat_specular);
+				//glMaterialfv(GL_FRONT, GL_EMISSION, earth_mat_emission);
+				//glMaterialf(GL_FRONT, GL_SHININESS, earth_mat_shininess);
+				GLUquadricObj* quadricSun = drawSphereWithTexture(3, 50, texture[1]);
 
 			}
 		glPopMatrix();
 		glPushMatrix();
-			glRotatef(0.5*r, 0, 0, 1);
+			glRotatef(0.5*r*speed, 0, 0, 1);
 			glTranslatef(0, 15, 0);
-			glRotatef(-1 * r, 0, 0, 1);
+			glRotatef(-1 * r * speed, 0, 0, 1);
 
-			glutWireSphere(2, 20, 20);
+			GLUquadricObj* quadricSun = drawSphereWithTexture(2, 50, texture[2]);
+
 		glPopMatrix();
 	glPopMatrix();
 	glutSwapBuffers();
 }
 
-void onKeyPress(int key, int x, int y) 
+void onKeyPress(unsigned char key, int x, int y) 
+{
+	switch (key)
+	{
+	case '+':
+		speed += 0.1;
+		glutPostRedisplay();
+		break;
+	case '-':
+		speed -= 0.1;
+		glutPostRedisplay();
+
+		break;
+	default:
+		break;
+	}
+}
+void onSpecialKeyPress(int key, int x, int y)
 {
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		h+=0.1;
+		h += 0.1;
 		glutPostRedisplay();
 		break;
 	case GLUT_KEY_DOWN:
-		h-=0.1;
+		h -= 0.1;
 		glutPostRedisplay();
 
 		break;
@@ -126,8 +172,16 @@ int main(int argc, char** argv)
 	init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
-	glutSpecialFunc(onKeyPress);
+	glutSpecialFunc(onSpecialKeyPress);
+	glutKeyboardFunc(onKeyPress);
 	glutTimerFunc(10,timerProc,10);
+	//initTexture3();
+	const char* texts[objCount] = {
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_sun.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_earth_daymap.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_jupiter.bmp"
+	};
+	initText(texts);
 	glutMainLoop();
 	return 0;
 }
