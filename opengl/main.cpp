@@ -7,22 +7,27 @@
 #include "texture.h"
 
 #include <windows.h>
-
 double h = 0;
 double r = 0;
-double speed = 1;
+double speed = 0.5;
 GLfloat  corner = 0.0;
 GLuint texName;
 GLuint texName2;
 GLuint texName3;
 GLuint textureSun;
-
+double orbital_radius[8] = {6.5,9.5,13,16,22,30,40,50};
 GLuint flag = 1;
 GLUquadricObj* qobj;
 
-const int objCount = 3;
+GLfloat radius[9] = { 1,0.2,0.3,
+0.4,0.15,0.7,
+0.65,0.45,0.48 };
 
-GLuint texture[3] = { 1,2,3 };
+const int objCount = 9;
+
+GLuint texture[9] = { 1,2,3 ,4,5,6,7,8,9};
+
+int drawStyle = GLU_FILL;
 void initText(const char** texturepaths)
 {
 	for (int i = 0; i < objCount; i++) {
@@ -31,19 +36,19 @@ void initText(const char** texturepaths)
 }
 void init(void)
 {
-	glClearColor(0.0, 0.0, 0.0, 0.0); //±³¾°ºÚÉ«
+	glClearColor(0.0, 0.0, 0.0, 0.0); //èƒŒæ™¯é»‘è‰²
 
 	{
-		GLfloat sun_light_position[] = { 0.0f, 0.0f, 0.0f, 1.0f }; //¹âÔ´µÄÎ»ÖÃÔÚÊÀ½ç×ø±êÏµÔ²ÐÄ£¬Æë´Î×ø±êÐÎÊ½
-		GLfloat sun_light_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f }; //RGBAÄ£Ê½µÄ»·¾³¹â£¬Îª0
-		GLfloat sun_light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f }; //RGBAÄ£Ê½µÄÂþ·´Éä¹â£¬È«°×¹â
-		GLfloat sun_light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };  //RGBAÄ£Ê½ÏÂµÄ¾µÃæ¹â £¬È«°×¹â
+		GLfloat sun_light_position[] = { 0.0f, 0.0f, 0.0f, 1.0f }; //å…‰æºçš„ä½ç½®åœ¨ä¸–ç•Œåæ ‡ç³»åœ†å¿ƒï¼Œé½æ¬¡åæ ‡å½¢å¼
+		GLfloat sun_light_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f }; //RGBAæ¨¡å¼çš„çŽ¯å¢ƒå…‰ï¼Œä¸º0
+		GLfloat sun_light_diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f }; //RGBAæ¨¡å¼çš„æ¼«åå°„å…‰ï¼Œå…¨ç™½å…‰
+		GLfloat sun_light_specular[] = { 1.0f, 1.0f, 1.0f, 1.0f };  //RGBAæ¨¡å¼ä¸‹çš„é•œé¢å…‰ ï¼Œå…¨ç™½å…‰
 		glLightfv(GL_LIGHT0, GL_POSITION, sun_light_position);
 		glLightfv(GL_LIGHT0, GL_AMBIENT, sun_light_ambient);
 		glLightfv(GL_LIGHT0, GL_DIFFUSE, sun_light_diffuse);
 		glLightfv(GL_LIGHT0, GL_SPECULAR, sun_light_specular);
 
-		//¿ªÆôµÆ¹â
+		//å¼€å¯ç¯å…‰
 		glEnable(GL_LIGHT0);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);
@@ -52,60 +57,87 @@ void init(void)
 
 void display(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //ÇåÀíÑÕÉ«ºÍÉî¶È»º´æ  
-	glColor3f(1.0, 1.0, 1.0); //»­±Ê°×É«
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //æ¸…ç†é¢œè‰²å’Œæ·±åº¦ç¼“å­˜  
+	glColor3f(1.0, 1.0, 1.0); //ç”»ç¬”ç™½è‰²
 
-	glLoadIdentity();  //¼ÓÔØµ¥Î»¾ØÕó
+	glLoadIdentity();  //åŠ è½½å•ä½çŸ©é˜µ
 
-	gluLookAt(0.0, h, 30, 0.0, h, 0.0, 0.0, 1.0, 0.0);
+	gluLookAt(0.0, -h, 50, 0.0, 0, 0.0, 0.0, 1.0, 0.0);
 
 	glPushMatrix();
-		drawCircle(10, 50);
-		drawCircle(15, 50);
+		//drawCircle(10, 50);
+		//drawCircle(15, 50);
+		for (int i = 0; i < 10; i++) {
+			drawDisk(orbital_radius[i]);
+		}
 		glPushMatrix();
 			glRotatef(2 * r * speed, 0, 0, 1);
 				{
-					//GLfloat sun_mat_ambient[] = { 0.0f, 0.0f, 0.0f, 1.0f };  //¶¨Òå²ÄÖÊµÄ»·¾³¹âÑÕÉ«£¬Îª0
-					//GLfloat sun_mat_diffuse[] = { 0.0f, 0.0f, 0.0f, 1.0f };  //¶¨Òå²ÄÖÊµÄÂþ·´Éä¹âÑÕÉ«£¬Îª0
-					//GLfloat sun_mat_specular[] = { 0.0f, 0.0f, 0.0f, 1.0f };   //¶¨Òå²ÄÖÊµÄ¾µÃæ·´Éä¹âÑÕÉ«£¬Îª0
-					//GLfloat sun_mat_emission[] = { 0.8f, 0.0f, 0.0f, 1.0f };   //¶¨Òå²ÄÖÊµÄ·øÉä¹ãÑÕÉ«£¬ÎªÆ«ºìÉ«
-					//GLfloat sun_mat_shininess = 0.0f;
-					//glMaterialfv(GL_FRONT, GL_AMBIENT, sun_mat_ambient);
-					//glMaterialfv(GL_FRONT, GL_DIFFUSE, sun_mat_diffuse);
-					//glMaterialfv(GL_FRONT, GL_SPECULAR, sun_mat_specular);
-					//glMaterialfv(GL_FRONT, GL_EMISSION, sun_mat_emission);
-					//glMaterialf(GL_FRONT, GL_SHININESS, sun_mat_shininess);
-
-
-				GLUquadricObj* quadricSun = drawSphereWithTexture(5, 50, texture[0]);
-
-				
+					GLUquadricObj* quadricSun = drawSphereWithTexture(radius[0] * 5, 50, texture[0], drawStyle);
+					std::cout << radius[0] * 5;
 				}
 		glPopMatrix();
 		glPushMatrix();
 			glRotatef(r * speed, 0, 0, 1);
-			glTranslatef(10, 0, 0);
+			glTranslatef(orbital_radius[0], 0, 0);
 			{
-				//GLfloat earth_mat_ambient[] = { 0.0f, 0.0f, 1.0f, 1.0f };  //¶¨Òå²ÄÖÊµÄ»·¾³¹âÑÕÉ«£¬Æ­À¶É«
-				//GLfloat earth_mat_diffuse[] = { 0.0f, 0.0f, 0.5f, 1.0f };  //¶¨Òå²ÄÖÊµÄÂþ·´Éä¹âÑÕÉ«£¬Æ«À¶É«
-				//GLfloat earth_mat_specular[] = { 1.0f, 0.0f, 0.0f, 1.0f };   //¶¨Òå²ÄÖÊµÄ¾µÃæ·´Éä¹âÑÕÉ«£¬ºìÉ«
-				//GLfloat earth_mat_emission[] = { 0.0f, 0.0f, 0.0f, 1.0f };   //¶¨Òå²ÄÖÊµÄ·øÉä¹âÑÕÉ«£¬Îª0
-				//GLfloat earth_mat_shininess = 30.0f;
-				//glMaterialfv(GL_FRONT, GL_AMBIENT, earth_mat_ambient);
-				//glMaterialfv(GL_FRONT, GL_DIFFUSE, earth_mat_diffuse);
-				//glMaterialfv(GL_FRONT, GL_SPECULAR, earth_mat_specular);
-				//glMaterialfv(GL_FRONT, GL_EMISSION, earth_mat_emission);
-				//glMaterialf(GL_FRONT, GL_SHININESS, earth_mat_shininess);
-				GLUquadricObj* quadricSun = drawSphereWithTexture(3, 50, texture[1]);
-
+				GLUquadricObj* quadricSun = drawSphereWithTexture(radius[1] * 5, 50, texture[1], drawStyle);
 			}
 		glPopMatrix();
 		glPushMatrix();
-			glRotatef(0.5*r*speed, 0, 0, 1);
-			glTranslatef(0, 15, 0);
-			glRotatef(-1 * r * speed, 0, 0, 1);
+		glRotatef(r * speed, 0, 0, 1);
 
-			GLUquadricObj* quadricSun = drawSphereWithTexture(2, 50, texture[2]);
+		glTranslatef(orbital_radius[1], 0, 0);
+		{
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[2] * 5, 50, texture[2], drawStyle);
+		}
+		glPopMatrix();
+
+
+		glPushMatrix();
+		glRotatef(r * speed, 0, 0, 1);
+		glTranslatef(orbital_radius[2], 0, 0);
+		{
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[3] * 5, 50, texture[3], drawStyle);
+		}
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotatef(r * speed, 0, 0, 1);
+		glTranslatef(orbital_radius[3], 0, 0);
+		{
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[4] * 5, 50, texture[4], drawStyle);
+		}
+		glPopMatrix();
+		glPushMatrix();
+		glRotatef(r * speed, 0, 0, 1);
+		glTranslatef(orbital_radius[4], 0, 0);
+		{
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[5] * 5, 50, texture[5], drawStyle);
+		}
+		glPopMatrix();
+		glPushMatrix();
+		glRotatef(r * speed, 0, 0, 1);
+		glTranslatef(orbital_radius[5], 0, 0);
+		{
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[6] * 5, 50, texture[6], drawStyle);
+			drawDisk(radius[6] * 5 + 1, 100, 0.2);
+
+		}
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotatef(r * speed, 0, 0, 1);
+		glTranslatef(orbital_radius[6], 0, 0);
+		{
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[7] * 5, 50, texture[7], drawStyle);
+		}
+		glPopMatrix();
+		glPushMatrix();
+			glRotatef(0.5*r*speed, 0, 0, 1);
+			glTranslatef(0, orbital_radius[7], 0);
+			glRotatef(-1 * r * speed, 0, 0, 1);
+			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[8] * 5, 50, texture[8], drawStyle);
 
 		glPopMatrix();
 	glPopMatrix();
@@ -134,11 +166,11 @@ void onSpecialKeyPress(int key, int x, int y)
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		h += 0.1;
+		h += 1;
 		glutPostRedisplay();
 		break;
 	case GLUT_KEY_DOWN:
-		h -= 0.1;
+		h -= 1;
 		glutPostRedisplay();
 
 		break;
@@ -157,20 +189,56 @@ void reshape(int w, int h)
 	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 30);
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 1.0, 150);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	gluLookAt(0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 }
+void fillOption(GLint selectedOption)//èœå•æ¶ˆæ¯å“åº”å‡½æ•°
+{
+	switch (selectedOption)
+	{
+	case 1:
+		drawStyle = GLU_FILL;//åŒè‰²å¡«å……
+		break;
+	case 2:
+		drawStyle = GLU_LINE;//é¡¶ç‚¹é¢œè‰²æ’å€¼
+		break;
+	default:
+		break;
+	}
+	glutPostRedisplay();//æ¶ˆæ¯å“åº”åŽå¿…é¡»è¢«é‡ç»˜
+}
+void OnContextMenu(HWND hWnd, LPARAM lParam)
+{
+	HMENU hPopup = CreatePopupMenu();
+	static int flag = 0;
+
+	AppendMenu(hPopup, MF_STRING | (flag ? MF_CHECKED : 0), 1001, "é€‰æ‹©");
+	AppendMenu(hPopup, MF_SEPARATOR, 0, "");
+	AppendMenu(hPopup, MF_STRING, 1002, "å³é”®2");
+
+	switch (TrackPopupMenu(hPopup, TPM_RETURNCMD, LOWORD(lParam), HIWORD(lParam), 0, hWnd, NULL))
+	{
+	case 1001:
+		flag = !flag;
+		break;
+	case 1002:
+		MessageBox(hWnd, "å³é”®2", "ä¿¡æ¯", MB_OK);
+		break;
+
+	}
+}
+
 int main(int argc, char** argv)
 {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA |GLUT_DEPTH);
-	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow(argv[0]);
-	init();
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
+	glutInitWindowSize(1280, 720);
+	glutInitWindowPosition(0, 0);
+	glutCreateWindow("123");
 	glutDisplayFunc(display);
+	init();
 	glutReshapeFunc(reshape);
 	glutSpecialFunc(onSpecialKeyPress);
 	glutKeyboardFunc(onKeyPress);
@@ -178,10 +246,24 @@ int main(int argc, char** argv)
 	//initTexture3();
 	const char* texts[objCount] = {
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_sun.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_mercury.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_venus_surface.bmp",
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_earth_daymap.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_jupiter.bmp"
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_mars.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_jupiter.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_saturn.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_uranus.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_neptune.bmp"
 	};
 	initText(texts);
+
+	//glutCreateSubWindow(mainWindow, 100, 100, 100, 100);
+	//glutDisplayFunc(display);
+	glutCreateMenu(fillOption);//åˆ›å»ºèœå•å¹¶ç»‘å®šå›žè°ƒå‡½æ•°
+	glutAddMenuEntry("fill", 1);//ç¬¬ä¸€ä¸ªèœå•é¡¹
+	glutAddMenuEntry("line", 2);//ç¬¬äºŒä¸ªèœå•
+	glutAttachMenu(GLUT_RIGHT_BUTTON);//æŒ‡å®šé¼ æ ‡å³é”®æ¥å¼¹å‡ºèœå•é¡¹
+
 	glutMainLoop();
 	return 0;
 }

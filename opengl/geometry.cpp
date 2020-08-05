@@ -1,31 +1,41 @@
 #include "geometry.h"
 #include <cmath>
 #define PI 3.1415926f
-void drawCircle(int radius, int slices)
+void drawCircle(GLfloat radius, int slices)
 {
 	glBegin(GL_LINE_LOOP);
 	for (int i = 0; i < slices; i++)
 	{
-		glVertex2f(radius * cos(2 * PI * i / slices), radius * sin(2 * PI * i / slices));   //¶¨Òå¶¥µã
+		glVertex2f(radius * cos(2 * PI * i / slices), radius * sin(2 * PI * i / slices));   //å®šä¹‰é¡¶ç‚¹
 	}
 	glEnd();
 }
 
-GLUquadricObj* drawSphere(int radius, int slices)
+GLUquadricObj* drawSphere(GLfloat radius, int slices)
 {
-	GLUquadricObj* qobj;// ´´½¨Ò»¸ö¶þ´ÎÇúÃæ(¶þ´ÎÇúÃæµÄ´´½¨GLUquadricObj* qobj;qobj = gluNewQuadric();)
+	GLUquadricObj* qobj;// åˆ›å»ºä¸€ä¸ªäºŒæ¬¡æ›²é¢(äºŒæ¬¡æ›²é¢çš„åˆ›å»ºGLUquadricObj* qobj;qobj = gluNewQuadric();)
 	qobj = gluNewQuadric();
 	gluSphere(qobj, radius, slices, slices);
 	return qobj;
 }
-GLUquadricObj* drawSphereWithTexture(int radius, int slices, GLuint textureName)
+GLUquadricObj* drawDisk(GLfloat radius, int slices,GLfloat width)
 {
-	GLUquadricObj* qobj;// ´´½¨Ò»¸ö¶þ´ÎÇúÃæ(¶þ´ÎÇúÃæµÄ´´½¨GLUquadricObj* qobj;qobj = gluNewQuadric();)
+
+	GLUquadricObj* qobj;// åˆ›å»ºä¸€ä¸ªäºŒæ¬¡æ›²é¢(äºŒæ¬¡æ›²é¢çš„åˆ›å»ºGLUquadricObj* qobj;qobj = gluNewQuadric();)
+	qobj = gluNewQuadric();
+	glDisable(GL_TEXTURE_2D);
+	gluDisk(qobj, radius, radius + width, slices, slices);
+	return qobj;
+}
+GLUquadricObj* drawSphereWithTexture(GLfloat radius, int slices, GLuint textureName,int drawStyle)
+{
+	GLUquadricObj* qobj;// åˆ›å»ºä¸€ä¸ªäºŒæ¬¡æ›²é¢(äºŒæ¬¡æ›²é¢çš„åˆ›å»ºGLUquadricObj* qobj;qobj = gluNewQuadric();)
 
 	qobj = gluNewQuadric();
+	gluQuadricDrawStyle(qobj, drawStyle);
 	glBindTexture(GL_TEXTURE_2D, textureName);
 	glEnable(GL_TEXTURE_2D);
-	gluQuadricTexture(qobj, GL_TRUE);//ÎÆÀíº¯Êý
+	gluQuadricTexture(qobj, GL_TRUE);//çº¹ç†å‡½æ•°
 	gluSphere(qobj, radius, slices, slices);
 	return qobj;
 }
