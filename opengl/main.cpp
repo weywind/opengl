@@ -27,7 +27,9 @@ const int objCount = 9;
 
 GLuint texture[9] = { 1,2,3 ,4,5,6,7,8,9};
 
+
 int drawStyle = GLU_FILL;
+int currentStar = 0;
 void initText(const char** texturepaths)
 {
 	for (int i = 0; i < objCount; i++) {
@@ -54,9 +56,16 @@ void init(void)
 		glEnable(GL_DEPTH_TEST);
 	}
 }
+void displaySingle() {
+	glColor3f(1.0, 1.0, 1.0); //画笔白色
+	glLoadIdentity();  //加载单位矩阵
 
+}
 void display(void)
 {
+	if (currentStar != 0) {
+		displaySingle();
+	}
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //清理颜色和深度缓存  
 	glColor3f(1.0, 1.0, 1.0); //画笔白色
 
@@ -74,7 +83,6 @@ void display(void)
 			glRotatef(2 * r * speed, 0, 0, 1);
 				{
 					GLUquadricObj* quadricSun = drawSphereWithTexture(radius[0] * 5, 50, texture[0], drawStyle);
-					std::cout << radius[0] * 5;
 				}
 		glPopMatrix();
 		glPushMatrix();
@@ -196,38 +204,58 @@ void reshape(int w, int h)
 }
 void fillOption(GLint selectedOption)//菜单消息响应函数
 {
-	switch (selectedOption)
-	{
-	case 1:
-		drawStyle = GLU_FILL;//同色填充
-		break;
-	case 2:
-		drawStyle = GLU_LINE;//顶点颜色插值
-		break;
-	default:
-		break;
-	}
+	std::cout << selectedOption;
+	//switch (selectedOption)
+	//{
+	//case 1:
+	//	drawStyle = GLU_FILL;//同色填充
+	//	break;
+	//case 2:
+	//	drawStyle = GLU_LINE;//顶点颜色插值
+	//	break;
+	//default:
+	//	break;
+	//}
+	//glutPostRedisplay();//消息响应后必须被重绘
+}
+void handleLine(int selected) {
+	drawStyle = GLU_LINE;
 	glutPostRedisplay();//消息响应后必须被重绘
 }
-void OnContextMenu(HWND hWnd, LPARAM lParam)
-{
-	HMENU hPopup = CreatePopupMenu();
-	static int flag = 0;
+void handleFill(int selected) {
+	drawStyle = GLU_FILL;
+	glutPostRedisplay();//消息响应后必须被重绘
+}
 
-	AppendMenu(hPopup, MF_STRING | (flag ? MF_CHECKED : 0), 1001, "选择");
-	AppendMenu(hPopup, MF_SEPARATOR, 0, "");
-	AppendMenu(hPopup, MF_STRING, 1002, "右键2");
+void attachMenu() {
 
-	switch (TrackPopupMenu(hPopup, TPM_RETURNCMD, LOWORD(lParam), HIWORD(lParam), 0, hWnd, NULL))
-	{
-	case 1001:
-		flag = !flag;
-		break;
-	case 1002:
-		MessageBox(hWnd, "右键2", "信息", MB_OK);
-		break;
+	GLint fillMenu = glutCreateMenu(handleFill);
+	glutAddMenuEntry("all", 0);
+	glutAddMenuEntry("sun", 1);
+	glutAddMenuEntry("mercury", 2);
+	glutAddMenuEntry("venus", 3);
+	glutAddMenuEntry("earth", 4);
+	glutAddMenuEntry("mars", 5);
+	glutAddMenuEntry("jupiter", 6);
+	glutAddMenuEntry("saturn", 7);
+	glutAddMenuEntry("uranus", 8);
+	glutAddMenuEntry("neptune", 9);
+	GLint lineMenu = glutCreateMenu(handleLine);
+	glutAddMenuEntry("all", 0);
+	glutAddMenuEntry("sun", 1);
+	glutAddMenuEntry("mercury", 2);
+	glutAddMenuEntry("venus", 3);
+	glutAddMenuEntry("earth", 4);
+	glutAddMenuEntry("mars", 5);
+	glutAddMenuEntry("jupiter", 6);
+	glutAddMenuEntry("saturn", 7);
+	glutAddMenuEntry("uranus", 8);
+	glutAddMenuEntry("neptune", 9);
 
-	}
+	GLint menu = glutCreateMenu(fillOption);
+	glutAddSubMenu("Fill", fillMenu);
+	glutAddSubMenu("Line", lineMenu);
+	glutAttachMenu(GLUT_RIGHT_BUTTON);
 }
 
 int main(int argc, char** argv)
@@ -259,11 +287,11 @@ int main(int argc, char** argv)
 
 	//glutCreateSubWindow(mainWindow, 100, 100, 100, 100);
 	//glutDisplayFunc(display);
-	glutCreateMenu(fillOption);//创建菜单并绑定回调函数
-	glutAddMenuEntry("fill", 1);//第一个菜单项
-	glutAddMenuEntry("line", 2);//第二个菜单
-	glutAttachMenu(GLUT_RIGHT_BUTTON);//指定鼠标右键来弹出菜单项
-
+	//glutCreateMenu(fillOption);//创建菜单并绑定回调函数
+	//glutAddMenuEntry("fill", 1);//第一个菜单项
+	//glutAddMenuEntry("line", 2);//第二个菜单
+	//glutAttachMenu(GLUT_RIGHT_BUTTON);//指定鼠标右键来弹出菜单项
+	attachMenu();
 	glutMainLoop();
 	return 0;
 }
