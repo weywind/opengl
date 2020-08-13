@@ -69,6 +69,18 @@ void displaySingle() {
 	{
 		glRotatef(2 * r * speed, 0, 0, -1);
 	}
+	else if (currentStar == 4)
+	{
+		
+		glPushMatrix();
+			
+			glRotatef(2 * r * speed, 0, 0, 1);
+			glTranslatef(30, 0, 0);
+			glRotatef(-1 * r * speed, 0, 0, 1);
+			GLUquadricObj* quadricSun2 = drawSphereWithTexture(5, 50, texture[currentStar - 1], drawStyle);
+		glPopMatrix();
+		glRotatef(2 * r * speed, 0, 0, 1);
+	}
 	else if (currentStar == 8)
 	{
 		glRotatef(2 * r * speed, 1, 0, 0);
@@ -78,6 +90,7 @@ void displaySingle() {
 	}
 	
 	GLUquadricObj* quadricSun = drawSphereWithTexture(15, 50, texture[currentStar - 1], drawStyle);
+
 	glutSwapBuffers();
 }
 void displayAll() {
