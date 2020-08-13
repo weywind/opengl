@@ -18,12 +18,24 @@ GLUquadricObj* drawSphere(GLfloat radius, int slices)
 	gluSphere(qobj, radius, slices, slices);
 	return qobj;
 }
-GLUquadricObj* drawDisk(GLfloat radius, int slices,GLfloat width)
+GLUquadricObj* drawDisk(GLfloat radius, int drawStyle, int slices, GLfloat width )
 {
 
 	GLUquadricObj* qobj;// 创建一个二次曲面(二次曲面的创建GLUquadricObj* qobj;qobj = gluNewQuadric();)
 	qobj = gluNewQuadric();
+	gluQuadricDrawStyle(qobj, drawStyle);
 	glDisable(GL_TEXTURE_2D);
+	gluDisk(qobj, radius, radius + width, slices, slices);
+	return qobj;
+}
+GLUquadricObj* drawDiskWithTexture(GLfloat radius, GLuint textureName, int drawStyle, GLfloat width, int slices)
+{
+	GLUquadricObj* qobj;// 创建一个二次曲面(二次曲面的创建GLUquadricObj* qobj;qobj = gluNewQuadric();)
+	qobj = gluNewQuadric();
+	gluQuadricDrawStyle(qobj, drawStyle);
+	glBindTexture(GL_TEXTURE_2D, textureName);
+	glEnable(GL_TEXTURE_2D);
+	gluQuadricTexture(qobj, GL_TRUE);//纹理函数
 	gluDisk(qobj, radius, radius + width, slices, slices);
 	return qobj;
 }

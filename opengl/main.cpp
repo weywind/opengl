@@ -29,7 +29,7 @@ GLuint texture[9] = { 1,2,3 ,4,5,6,7,8,9};
 
 
 int drawStyle = GLU_FILL;
-int currentStar = 0;
+int currentStar = 1;
 void initText(const char** texturepaths)
 {
 	for (int i = 0; i < objCount; i++) {
@@ -59,97 +59,122 @@ void init(void)
 void displaySingle() {
 	glColor3f(1.0, 1.0, 1.0); //画笔白色
 	glLoadIdentity();  //加载单位矩阵
+	gluLookAt(0.0, -50, 50, 0.0, 0, 0.0, 0.0, 1.0, 0.0);
 
-}
-void display(void)
-{
-	if (currentStar != 0) {
-		displaySingle();
+	if (currentStar == 7) {
+		drawDiskWithTexture(25, texture[objCount],drawStyle,5,100);
+		glRotatef(2 * r * speed, 0, 0, 1);
 	}
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //清理颜色和深度缓存  
-	glColor3f(1.0, 1.0, 1.0); //画笔白色
+	else if(currentStar == 3)
+	{
+		glRotatef(2 * r * speed, 0, 0, -1);
+	}
+	else if (currentStar == 8)
+	{
+		glRotatef(2 * r * speed, 1, 0, 0);
+	}
+	else {
+		glRotatef(2 * r * speed, 0, 0, 1);
+	}
+	
+	GLUquadricObj* quadricSun = drawSphereWithTexture(15, 50, texture[currentStar - 1], drawStyle);
+	glutSwapBuffers();
+}
+void displayAll() {
 
-	glLoadIdentity();  //加载单位矩阵
 
 	gluLookAt(0.0, -h, 50, 0.0, 0, 0.0, 0.0, 1.0, 0.0);
 
 	glPushMatrix();
-		//drawCircle(10, 50);
-		//drawCircle(15, 50);
-		for (int i = 0; i < 10; i++) {
-			drawDisk(orbital_radius[i]);
-		}
-		glPushMatrix();
-			glRotatef(2 * r * speed, 0, 0, 1);
-				{
-					GLUquadricObj* quadricSun = drawSphereWithTexture(radius[0] * 5, 50, texture[0], drawStyle);
-				}
-		glPopMatrix();
-		glPushMatrix();
-			glRotatef(r * speed, 0, 0, 1);
-			glTranslatef(orbital_radius[0], 0, 0);
-			{
-				GLUquadricObj* quadricSun = drawSphereWithTexture(radius[1] * 5, 50, texture[1], drawStyle);
-			}
-		glPopMatrix();
-		glPushMatrix();
-		glRotatef(r * speed, 0, 0, 1);
+	//drawCircle(10, 50);
+	//drawCircle(15, 50);
+	for (int i = 1; i < 10; i++) {
+		drawDisk(orbital_radius[i-1], drawStyle);
+	}
+	glPushMatrix();
+	glRotatef(2 * r * speed, 0, 0, 1);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[0] * 5, 50, texture[0], drawStyle);
+	}
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
+	glTranslatef(orbital_radius[0], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[1] * 5, 50, texture[1], drawStyle);
+	}
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
 
-		glTranslatef(orbital_radius[1], 0, 0);
-		{
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[2] * 5, 50, texture[2], drawStyle);
-		}
-		glPopMatrix();
+	glTranslatef(orbital_radius[1], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[2] * 5, 50, texture[2], drawStyle);
+	}
+	glPopMatrix();
 
 
-		glPushMatrix();
-		glRotatef(r * speed, 0, 0, 1);
-		glTranslatef(orbital_radius[2], 0, 0);
-		{
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[3] * 5, 50, texture[3], drawStyle);
-		}
-		glPopMatrix();
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
+	glTranslatef(orbital_radius[2], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[3] * 5, 50, texture[3], drawStyle);
+	}
+	glPopMatrix();
 
-		glPushMatrix();
-		glRotatef(r * speed, 0, 0, 1);
-		glTranslatef(orbital_radius[3], 0, 0);
-		{
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[4] * 5, 50, texture[4], drawStyle);
-		}
-		glPopMatrix();
-		glPushMatrix();
-		glRotatef(r * speed, 0, 0, 1);
-		glTranslatef(orbital_radius[4], 0, 0);
-		{
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[5] * 5, 50, texture[5], drawStyle);
-		}
-		glPopMatrix();
-		glPushMatrix();
-		glRotatef(r * speed, 0, 0, 1);
-		glTranslatef(orbital_radius[5], 0, 0);
-		{
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[6] * 5, 50, texture[6], drawStyle);
-			drawDisk(radius[6] * 5 + 1, 100, 0.2);
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
+	glTranslatef(orbital_radius[3], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[4] * 5, 50, texture[4], drawStyle);
+	}
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
+	glTranslatef(orbital_radius[4], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[5] * 5, 50, texture[5], drawStyle);
+	}
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
+	glTranslatef(orbital_radius[5], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[6] * 5, 50, texture[6], drawStyle);
+		drawDisk(radius[6] * 5 + 1, drawStyle, 100, 0.2);
 
-		}
-		glPopMatrix();
+	}
+	glPopMatrix();
 
-		glPushMatrix();
-		glRotatef(r * speed, 0, 0, 1);
-		glTranslatef(orbital_radius[6], 0, 0);
-		{
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[7] * 5, 50, texture[7], drawStyle);
-		}
-		glPopMatrix();
-		glPushMatrix();
-			glRotatef(0.5*r*speed, 0, 0, 1);
-			glTranslatef(0, orbital_radius[7], 0);
-			glRotatef(-1 * r * speed, 0, 0, 1);
-			GLUquadricObj* quadricSun = drawSphereWithTexture(radius[8] * 5, 50, texture[8], drawStyle);
+	glPushMatrix();
+	glRotatef(r * speed, 0, 0, 1);
+	glTranslatef(orbital_radius[6], 0, 0);
+	{
+		GLUquadricObj* quadricSun = drawSphereWithTexture(radius[7] * 5, 50, texture[7], drawStyle);
+	}
+	glPopMatrix();
+	glPushMatrix();
+	glRotatef(0.5 * r * speed, 0, 0, 1);
+	glTranslatef(0, orbital_radius[7], 0);
+	glRotatef(-1 * r * speed, 0, 0, 1);
+	GLUquadricObj* quadricSun = drawSphereWithTexture(radius[8] * 5, 50, texture[8], drawStyle);
 
-		glPopMatrix();
+	glPopMatrix();
 	glPopMatrix();
 	glutSwapBuffers();
+}
+void display(void)
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  //清理颜色和深度缓存  
+	glColor3f(1.0, 1.0, 1.0); //画笔白色
+	glLoadIdentity();  //加载单位矩阵
+	if (currentStar != 0) {
+		displaySingle();
+	}
+	else {
+		displayAll();
+	}
+	
 }
 
 void onKeyPress(unsigned char key, int x, int y) 
@@ -220,10 +245,12 @@ void fillOption(GLint selectedOption)//菜单消息响应函数
 }
 void handleLine(int selected) {
 	drawStyle = GLU_LINE;
+	currentStar = selected;
 	glutPostRedisplay();//消息响应后必须被重绘
 }
 void handleFill(int selected) {
 	drawStyle = GLU_FILL;
+	currentStar = selected;
 	glutPostRedisplay();//消息响应后必须被重绘
 }
 
@@ -272,7 +299,7 @@ int main(int argc, char** argv)
 	glutKeyboardFunc(onKeyPress);
 	glutTimerFunc(10,timerProc,10);
 	//initTexture3();
-	const char* texts[objCount] = {
+	const char* texts[objCount+1] = {
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_sun.bmp",
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_mercury.bmp",
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_venus_surface.bmp",
@@ -281,7 +308,8 @@ int main(int argc, char** argv)
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_jupiter.bmp",
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_saturn.bmp",
 		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_uranus.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_neptune.bmp"
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_neptune.bmp",
+		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_saturn_ring_alpha.bmp"
 	};
 	initText(texts);
 
