@@ -1,23 +1,18 @@
 
+#pragma comment( linker, "/subsystem:\"windows\" /entry:\"mainCRTStartup\"" )
 #include <GL/glut.h>
 #include <stdlib.h>
 #include<iostream>
 #include <gl/GLAUX.H>
 #include "geometry.h"
 #include "texture.h"
-
 #include <windows.h>
 GLfloat h = 30;
 GLfloat r = 0;
 GLfloat speed = 0.5;
 GLfloat  corner = 0.0;
-GLuint texName;
-GLuint texName2;
-GLuint texName3;
-GLuint textureSun;
 GLfloat orbital_radius[8] = {6.5,9.5,13,16,22,30,40,50};
 GLuint flag = 1;
-GLUquadricObj* qobj;
 
 GLfloat radius[9] = { 1.f,0.2f,0.3f,
 0.4f,0.15f,0.7f,
@@ -311,19 +306,6 @@ void reshape(int w, int h)
 }
 void fillOption(GLint selectedOption)//菜单消息响应函数
 {
-	std::cout << selectedOption;
-	//switch (selectedOption)
-	//{
-	//case 1:
-	//	drawStyle = GLU_FILL;//同色填充
-	//	break;
-	//case 2:
-	//	drawStyle = GLU_LINE;//顶点颜色插值
-	//	break;
-	//default:
-	//	break;
-	//}
-	//glutPostRedisplay();//消息响应后必须被重绘
 }
 void handleLine(int selected) {
 	drawStyle = GLU_LINE;
@@ -391,7 +373,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE);
 	glutInitWindowSize(1280, 720);
 	glutInitWindowPosition(0, 0);
-	glutCreateWindow("123");
+	glutCreateWindow("test 2");
 	glutDisplayFunc(display);
 	init();
 	glutReshapeFunc(reshape);
@@ -400,17 +382,17 @@ int main(int argc, char** argv)
 	glutTimerFunc(10,timerProc,10);
 	//initTexture3();
 	const char* texts[objCount+2] = {
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_sun.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_mercury.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_venus_surface.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_earth_daymap.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_mars.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_jupiter.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_saturn.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_uranus.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\2k_neptune.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_moon.bmp",
-		"C:\\Users\\weywi\\Desktop\\texture_bmp\\8k_saturn_ring_alpha.bmp"
+		"./01_8k_sun.bmp",
+		"./02_8k_mercury.bmp",
+		"./03_8k_venus_surface.bmp",
+		"./04_8k_earth_daymap.bmp",
+		"./05_8k_mars.bmp",
+		"./06_8k_jupiter.bmp",
+		"./07_8k_saturn.bmp",
+		"./08_2k_uranus.bmp",
+		"./09_2k_neptune.bmp",
+		"./10_8k_moon.bmp",
+		"./11_8k_saturn_ring_alpha.bmp"
 	};
 	initText(texts);
 

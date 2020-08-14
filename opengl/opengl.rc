@@ -1,0 +1,91 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "winres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""winres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\01_8k_sun.bmp"
+
+IDB_BITMAP2             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\02_8k_mercury.bmp"
+
+IDB_BITMAP3             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\03_8k_venus_surface.bmp"
+
+IDB_BITMAP4             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\04_8k_earth_daymap.bmp"
+
+IDB_BITMAP5             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\4k_venus_atmosphere.bmp"
+
+IDB_BITMAP6             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\05_8k_mars.bmp"
+
+IDB_BITMAP7             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\06_8k_jupiter.bmp"
+
+IDB_BITMAP8             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\07_8k_saturn.bmp"
+
+IDB_BITMAP9             BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\08_2k_uranus.bmp"
+
+IDB_BITMAP10            BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\09_2k_neptune.bmp"
+
+IDB_BITMAP11            BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\10_8k_moon.bmp"
+
+IDB_BITMAP12            BITMAP                  "C:\\Users\\weywi\\Desktop\\texture_bmp\\11_8k_saturn_ring_alpha.bmp"
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
